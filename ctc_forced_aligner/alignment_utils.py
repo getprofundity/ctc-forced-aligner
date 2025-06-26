@@ -260,6 +260,7 @@ def load_alignment_model(
     model_path: str = "MahmoudAshraf/mms-300m-1130-forced-aligner",
     attn_implementation: str = None,
     dtype: torch.dtype = torch.float32,
+    cache_dir: str = None,
 ):
     if attn_implementation is None:
         if version.parse(transformers_version) < version.parse("4.41.0"):
@@ -278,10 +279,11 @@ def load_alignment_model(
             model_path,
             attn_implementation=attn_implementation,
             torch_dtype=dtype,
+            cache_dir=cache_dir,
         )
         .to(device)
         .eval()
     )
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    tokenizer = AutoTokenizer.from_pretrained(model_path, cache_dir=cache_dir)
 
     return model, tokenizer
